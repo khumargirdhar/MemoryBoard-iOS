@@ -13,13 +13,32 @@ struct EntryDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                if let imageData = entry.imageData, let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 300)
-                        .cornerRadius(20)
-                        .padding(.bottom)
+//                if let imageData = entry.imageData, let uiImage = UIImage(data: imageData) {
+//                    Image(uiImage: uiImage)
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(height: 300)
+//                        .cornerRadius(20)
+//                        .padding(.bottom)
+//                }
+                
+                // Display the image gallery if there are any images
+                if let imageDataArray = entry.imageData, !imageDataArray.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: true) {
+                        HStack {
+                            ForEach(imageDataArray, id: \.self) { data in
+                                if let image = UIImage(data: data) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 400, height: 400)
+                                        .cornerRadius(10)
+                                        .clipped()
+                                }
+                            }
+                        }
+                    }
+                    .frame(height: 400)
                 }
                 
                 Text(entry.title)

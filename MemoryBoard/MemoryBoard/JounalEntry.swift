@@ -13,7 +13,7 @@ struct JournalEntry: Identifiable, Codable {
     var content: String
     var date: Date
     var tags: [String]
-    var imageData: Data? // for storing images
+    var imageData: [Data]? // for storing images
     
     static var example: JournalEntry {
         JournalEntry(

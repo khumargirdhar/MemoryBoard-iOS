@@ -16,7 +16,8 @@ struct NewEntryView: View {
     @State private var content = ""
     @State private var tags = ""
     @State private var image: UIImage? = nil
-    @State private var selectedImage: PhotosPickerItem? = nil
+    @State private var selectedImages: [UIImage] = []
+    @State private var showPhotoPicker = false
     
     var body: some View {
         NavigationView {
@@ -34,30 +35,28 @@ struct NewEntryView: View {
                     TextField("Enter tags separated by commas", text: $tags)
                 }
                 
-                Section {
-                    PhotosPicker(selection: $selectedImage, matching: .images) {
-                        Text("Pick Image")
-                    }
-                    .onChange(of: selectedImage) { newValue in
-                        if let newValue = newValue {
-                            Task {
-                                if let data = try? await newValue.loadTransferable(type: Data.self),
-                                   let uiImage = UIImage(data: data) {
-                                    self.image = uiImage
-                                }
-                            }
-                        }
+                Section(header: Text("Photos")) {
+                    Button(action: {
+                        showPhotoPicker = true
+                    }) {
+                        Text("Select Photos")
                     }
                     
-                    if let image = image {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
+                    // Display selected images as thumbnails
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(selectedImages, id: \.self) { image in
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .frame(width: 100, height: 100)
+                                    .cornerRadius(8)
+                            }
+                        }
                     }
                 }
             }
             .navigationTitle("New Entry")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -72,7 +71,7 @@ struct NewEntryView: View {
                             content: content,
                             date: Date(),
                             tags: tags.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) },
-                            imageData: image?.jpegData(compressionQuality: 0.8)
+                            imageData: selectedImages.compactMap { $0.jpegData(compressionQuality: 0.8) }
                         )
                         entries.append(newEntry)
                         dismiss()
@@ -80,23 +79,26 @@ struct NewEntryView: View {
                     .disabled(title.isEmpty || content.isEmpty)
                 }
             }
+            .sheet(isPresented: $showPhotoPicker) {
+                PhotoPickerView(selectedImages: $selectedImages) // Photo picker for multiple image selection
+            }
         }
     }
 }
 
 
-struct NewEntryView_Previews: PreviewProvider {
-    static var previews: some View {
-        NewEntryView(entries: .constant([
-            JournalEntry(
-                title: "Sample Title",
-                content: "This is some sample content for a new journal entry.",
-                date: Date(),
-                tags: ["Sample", "Preview"],
-                imageData: nil
-            )
-        ]))
-    }
-}
+//struct NewEntryView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NewEntryView(entries: .constant([
+//            JournalEntry(
+//                title: "Sample Title",
+//                content: "This is some sample content for a new journal entry.",
+//                date: Date(),
+//                tags: ["Sample", "Preview"],
+//                imageData: nil
+//            )
+//        ]))
+//    }
+//}
 
 

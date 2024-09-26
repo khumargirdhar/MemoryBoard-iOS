@@ -15,6 +15,7 @@
 		9E8F920A2CA5363D00914923 /* EntryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F92092CA5363D00914923 /* EntryListView.swift */; };
 		9E8F920C2CA5365700914923 /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F920B2CA5365700914923 /* EntryDetailView.swift */; };
 		9E8F920E2CA5367500914923 /* NewEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F920D2CA5367500914923 /* NewEntryView.swift */; };
+		9EED16F22CA54F35008119CF /* entries.json in Resources */ = {isa = PBXBuildFile; fileRef = 9EED16F12CA54F35008119CF /* entries.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		9E8F92092CA5363D00914923 /* EntryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryListView.swift; sourceTree = "<group>"; };
 		9E8F920B2CA5365700914923 /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
 		9E8F920D2CA5367500914923 /* NewEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEntryView.swift; sourceTree = "<group>"; };
+		9EED16F12CA54F35008119CF /* entries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = entries.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				9E8F920D2CA5367500914923 /* NewEntryView.swift */,
 				9E8F920B2CA5365700914923 /* EntryDetailView.swift */,
 				9E8F92072CA5362300914923 /* JounalEntry.swift */,
+				9EED16F12CA54F35008119CF /* entries.json */,
 				9E8F91FD2CA5356800914923 /* Assets.xcassets */,
 				9E8F91FF2CA5356800914923 /* Preview Content */,
 			);
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E8F92012CA5356800914923 /* Preview Assets.xcassets in Resources */,
+				9EED16F22CA54F35008119CF /* entries.json in Resources */,
 				9E8F91FE2CA5356800914923 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

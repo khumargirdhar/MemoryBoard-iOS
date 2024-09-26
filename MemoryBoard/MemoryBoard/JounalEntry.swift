@@ -14,9 +14,7 @@ struct JournalEntry: Identifiable, Codable {
     var date: Date
     var tags: [String]
     var imageData: Data? // for storing images
-}
-
-extension JournalEntry {
+    
     static var example: JournalEntry {
         JournalEntry(
             title: "A Day at the Park",

@@ -13,18 +13,21 @@ struct EntryListView: View {
     
     var body: some View {
         NavigationView {
-            List(entries.sorted(by: { $0.date > $1.date })) { entry in
-                NavigationLink(destination: EntryDetailView(entry: entry)) {
-                    VStack(alignment: .leading) {
-                        Text(entry.title)
-                            .font(.headline)
-                        Text(entry.date, style: .date)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+            List {
+                ForEach(entries.sorted(by: { $0.date > $1.date })) { entry in
+                    NavigationLink(destination: EntryDetailView(entry: entry)) {
+                        VStack(alignment: .leading) {
+                            Text(entry.title)
+                                .font(.headline)
+                            Text(entry.date, style: .date)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
+                .onDelete(perform: deleteEntries) // Add delete functionality here
             }
-            .navigationTitle("Journal")
+            .navigationTitle("MemoryBoard")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -33,12 +36,20 @@ struct EntryListView: View {
                         Image(systemName: "plus")
                     }
                 }
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    EditButton()
+                }
             }
             .sheet(isPresented: $showNewEntryView) {
                 NewEntryView(entries: $entries)
             }
         }
     }
+    
+    func deleteEntries(at offsets: IndexSet) {
+            entries.remove(atOffsets: offsets)
+        }
 }
 
 

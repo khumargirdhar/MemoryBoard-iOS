@@ -21,35 +21,40 @@ struct NewEntryView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                Section(header: Text("Title")) {
-                    TextField("Enter title", text: $title)
-                }
+            VStack {
                 
-                Section(header: Text("Content")) {
-                    TextEditor(text: $content)
-                        .frame(height: 200)
-                }
+                ReflectionCardView()
                 
-                Section(header: Text("Tags")) {
-                    TextField("Enter tags separated by commas", text: $tags)
-                }
-                
-                Section(header: Text("Photos")) {
-                    Button(action: {
-                        showPhotoPicker = true
-                    }) {
-                        Text("Select Photos")
+                Form {
+                    Section(header: Text("Title")) {
+                        TextField("Enter title", text: $title)
                     }
                     
-                    // Display selected images as thumbnails
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(selectedImages, id: \.self) { image in
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .frame(width: 100, height: 100)
-                                    .cornerRadius(8)
+                    Section(header: Text("Content")) {
+                        TextEditor(text: $content)
+                            .frame(height: 200)
+                    }
+                    
+                    Section(header: Text("Tags")) {
+                        TextField("Enter tags separated by commas", text: $tags)
+                    }
+                    
+                    Section(header: Text("Photos")) {
+                        Button(action: {
+                            showPhotoPicker = true
+                        }) {
+                            Text("Select Photos")
+                        }
+                        
+                        // Display selected images as thumbnails
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(selectedImages, id: \.self) { image in
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .frame(width: 100, height: 100)
+                                        .cornerRadius(8)
+                                }
                             }
                         }
                     }

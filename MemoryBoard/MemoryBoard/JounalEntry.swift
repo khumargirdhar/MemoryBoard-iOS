@@ -13,15 +13,14 @@ struct JournalEntry: Identifiable, Codable {
     var content: String
     var date: Date
     var tags: [String]
-    var imageData: [Data]? // for storing images
+    var images: [Data]? = [] // for storing images
     
     static var example: JournalEntry {
         JournalEntry(
             title: "A Day at the Park",
             content: "Today I spent a lovely day at the park with friends. The weather was beautiful!",
             date: Date(),
-            tags: ["Nature", "Friends", "Outdoors"],
-            imageData: nil
+            tags: ["Nature", "Friends", "Outdoors"]
         )
     }
 }

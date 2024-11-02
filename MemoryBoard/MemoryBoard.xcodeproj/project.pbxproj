@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9E379B3D2CA59B1400134994 /* PhotoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E379B3C2CA59B1400134994 /* PhotoPickerView.swift */; };
+		9E6AFA732CD6260100893B03 /* JournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AFA722CD6260100893B03 /* JournalViewModel.swift */; };
 		9E8F91FA2CA5356400914923 /* MemoryBoardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F91F92CA5356400914923 /* MemoryBoardApp.swift */; };
 		9E8F91FC2CA5356400914923 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F91FB2CA5356400914923 /* ContentView.swift */; };
 		9E8F91FE2CA5356800914923 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E8F91FD2CA5356800914923 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		9E379B3C2CA59B1400134994 /* PhotoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerView.swift; sourceTree = "<group>"; };
+		9E6AFA722CD6260100893B03 /* JournalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalViewModel.swift; sourceTree = "<group>"; };
 		9E8F91F62CA5356400914923 /* MemoryBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoryBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E8F91F92CA5356400914923 /* MemoryBoardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBoardApp.swift; sourceTree = "<group>"; };
 		9E8F91FB2CA5356400914923 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				9E8F920B2CA5365700914923 /* EntryDetailView.swift */,
 				9EF8E88A2CD5FC31008D1D89 /* ReflectionCardView.swift */,
 				9E8F92072CA5362300914923 /* JounalEntry.swift */,
+				9E6AFA722CD6260100893B03 /* JournalViewModel.swift */,
 				9E379B3C2CA59B1400134994 /* PhotoPickerView.swift */,
 				9EED16F12CA54F35008119CF /* entries.json */,
 				9E8F91FD2CA5356800914923 /* Assets.xcassets */,
@@ -159,6 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E6AFA732CD6260100893B03 /* JournalViewModel.swift in Sources */,
 				9E8F920E2CA5367500914923 /* NewEntryView.swift in Sources */,
 				9E8F91FC2CA5356400914923 /* ContentView.swift in Sources */,
 				9E8F920C2CA5365700914923 /* EntryDetailView.swift in Sources */,

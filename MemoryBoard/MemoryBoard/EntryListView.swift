@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct EntryListView: View {
-    @Binding var entries: [JournalEntry] // Declare entries as Binding
     @State private var showNewEntryView = false
+    @StateObject private var viewModel = JournalViewModel()
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(entries.sorted(by: { $0.date > $1.date })) { entry in
+                ForEach(viewModel.entries.sorted(by: { $0.date > $1.date })) { entry in
                     NavigationLink(destination: EntryDetailView(entry: entry)) {
                         VStack(alignment: .leading) {
                             Text(entry.title)
@@ -42,30 +42,13 @@ struct EntryListView: View {
                 }
             }
             .sheet(isPresented: $showNewEntryView) {
-                NewEntryView(entries: $entries)
+                NewEntryView(entries: $viewModel.entries, viewModel: JournalViewModel())
             }
         }
     }
     
     func deleteEntries(at offsets: IndexSet) {
-            entries.remove(atOffsets: offsets)
-        }
-}
-
-
-struct EntryListView_Previews: PreviewProvider {
-    static var previews: some View {
-        EntryListView(entries: .constant([
-            JournalEntry(
-                title: "First Journal Entry",
-                content: "Today was a great day!",
-                date: Date(),
-                tags: ["Personal", "Happy"],
-                imageData: nil
-            ),
-            JournalEntry.example
-        ]))
+        viewModel.entries.remove(atOffsets: offsets)
     }
 }
-
 

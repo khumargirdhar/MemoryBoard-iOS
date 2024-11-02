@@ -23,7 +23,7 @@ struct EntryDetailView: View {
 //                }
                 
                 // Display the image gallery if there are any images
-                if let imageDataArray = entry.imageData, !imageDataArray.isEmpty {
+                if let imageDataArray = entry.images, !imageDataArray.isEmpty {
                     ScrollView(.horizontal, showsIndicators: true) {
                         HStack {
                             ForEach(imageDataArray, id: \.self) { data in
@@ -64,11 +64,4 @@ struct EntryDetailView: View {
             formatter.timeStyle = .none
             return formatter.string(from: date)
         }
-}
-
-
-struct EntryDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        EntryDetailView(entry: JournalEntry(title: "Test", content: "Test Content", date: Date.now, tags: []))
-    }
 }

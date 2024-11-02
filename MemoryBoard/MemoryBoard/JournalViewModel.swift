@@ -14,7 +14,9 @@ class JournalViewModel: ObservableObject {
     }
 
     func addEntry(_ entry: JournalEntry) {
-        entries.append(entry)
+        DispatchQueue.main.async {
+            self.entries.append(entry)
+        }
     }
 
     private func saveEntries() {
@@ -28,7 +30,9 @@ class JournalViewModel: ObservableObject {
         // Load entries from UserDefaults
         if let savedData = UserDefaults.standard.data(forKey: entriesKey),
            let decodedEntries = try? JSONDecoder().decode([JournalEntry].self, from: savedData) {
-            entries = decodedEntries
+            DispatchQueue.main.async {
+                self.entries = decodedEntries
+            }
         }
     }
 }

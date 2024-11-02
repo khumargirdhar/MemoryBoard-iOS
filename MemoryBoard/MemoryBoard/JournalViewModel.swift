@@ -7,25 +7,27 @@ class JournalViewModel: ObservableObject {
         }
     }
 
+    private let entriesKey = "journalEntries"
+
     init() {
         loadEntries()
     }
-
-    private let entriesKey = "journalEntries"
 
     func addEntry(_ entry: JournalEntry) {
         entries.append(entry)
     }
 
     private func saveEntries() {
-        if let encoded = try? JSONEncoder().encode(entries) {
-            UserDefaults.standard.set(encoded, forKey: entriesKey)
+        // Encode the entries array to JSON and save it
+        if let encodedData = try? JSONEncoder().encode(entries) {
+            UserDefaults.standard.set(encodedData, forKey: entriesKey)
         }
     }
 
     private func loadEntries() {
-        if let savedEntries = UserDefaults.standard.data(forKey: entriesKey),
-           let decodedEntries = try? JSONDecoder().decode([JournalEntry].self, from: savedEntries) {
+        // Load entries from UserDefaults
+        if let savedData = UserDefaults.standard.data(forKey: entriesKey),
+           let decodedEntries = try? JSONDecoder().decode([JournalEntry].self, from: savedData) {
             entries = decodedEntries
         }
     }

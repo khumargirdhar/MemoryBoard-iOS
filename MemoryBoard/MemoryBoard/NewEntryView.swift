@@ -10,7 +10,6 @@ import PhotosUI
 
 struct NewEntryView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var entries: [JournalEntry]
     @ObservedObject var viewModel: JournalViewModel
     
     @State private var title = ""
@@ -98,7 +97,6 @@ struct NewEntryView: View {
                             tags: tags.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) },
                             images: selectedImages
                         )
-                        entries.append(newEntry)
                         viewModel.addEntry(newEntry)
                         dismiss()
                     }

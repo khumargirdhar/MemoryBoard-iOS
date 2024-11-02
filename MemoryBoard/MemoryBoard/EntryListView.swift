@@ -42,7 +42,7 @@ struct EntryListView: View {
                 }
             }
             .sheet(isPresented: $showNewEntryView) {
-                NewEntryView(entries: $viewModel.entries, viewModel: JournalViewModel())
+                NewEntryView(viewModel: JournalViewModel())
             }
         }
     }

@@ -1,10 +1,3 @@
-//
-//  NewEntryView.swift
-//  MemoryBoard
-//
-//  Created by Khumar Girdhar on 26/09/24.
-//
-
 import SwiftUI
 import PhotosUI
 
@@ -15,10 +8,8 @@ struct NewEntryView: View {
     @State private var title = ""
     @State private var content = ""
     @State private var tags = ""
-    @State private var image: UIImage? = nil
-    @State private var selectedImages: [Data] = []
-    @State private var showPhotoPicker = false
     @State private var selectedImageItems: [PhotosPickerItem] = []
+    @State private var selectedImagePaths: [String] = [] // Store file paths instead of Data
     
     var body: some View {
         NavigationView {
@@ -41,18 +32,12 @@ struct NewEntryView: View {
                     }
                     
                     Section(header: Text("Photos")) {
-//                        Button(action: {
-//                            showPhotoPicker = true
-//                        }) {
-//                            Text("Select Photos")
-//                        }
-                        
                         // Display selected images as thumbnails
-                        if !selectedImages.isEmpty {
+                        if !selectedImagePaths.isEmpty {
                             ScrollView(.horizontal) {
                                 HStack {
-                                    ForEach(selectedImages, id: \.self) { imageData in
-                                        if let uiImage = UIImage(data: imageData) {
+                                    ForEach(selectedImagePaths, id: \.self) { imagePath in
+                                        if let uiImage = UIImage(contentsOfFile: imagePath) {
                                             Image(uiImage: uiImage)
                                                 .resizable()
                                                 .scaledToFill()
@@ -67,11 +52,13 @@ struct NewEntryView: View {
                         
                         PhotosPicker("Select Photos", selection: $selectedImageItems, matching: .images, photoLibrary: .shared())
                             .onChange(of: selectedImageItems) { newItems in
-                                selectedImages = []
+                                selectedImagePaths = []
                                 for item in newItems {
                                     item.loadTransferable(type: Data.self) { result in
                                         if case .success(let data) = result, let data = data {
-                                            selectedImages.append(data)
+                                            // Save image to file and store the path
+                                            let filePath = saveImageToFile(data: data)
+                                            selectedImagePaths.append(filePath)
                                         }
                                     }
                                 }
@@ -95,7 +82,7 @@ struct NewEntryView: View {
                             content: content,
                             date: Date(),
                             tags: tags.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) },
-                            images: selectedImages
+                            images: selectedImagePaths // Store paths
                         )
                         viewModel.addEntry(newEntry)
                         dismiss()
@@ -103,10 +90,27 @@ struct NewEntryView: View {
                     .disabled(title.isEmpty || content.isEmpty)
                 }
             }
-//            .sheet(isPresented: $showPhotoPicker) {
-////                PhotoPickerView(selectedImages: $selectedImages) // Photo picker for multiple image selection
-//                PhotosPicker("Select Photos", selection: $selectedImages, matching: .images)
-//            }
+        }
+    }
+    
+    private func saveImageToFile(data: Data) -> String {
+        // Get the documents directory
+        let fileManager = FileManager.default
+        guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return ""
+        }
+        
+        // Create a unique file name
+        let fileName = UUID().uuidString + ".jpg"
+        let fileURL = documentsDirectory.appendingPathComponent(fileName)
+        
+        // Save the image data to the file
+        do {
+            try data.write(to: fileURL)
+            return fileURL.path // Return the file path
+        } catch {
+            print("Error saving image: \(error)")
+            return ""
         }
     }
 }

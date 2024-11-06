@@ -4,6 +4,7 @@ struct EntryListView: View {
     @State private var showNewEntryView = false
     @ObservedObject private var viewModel = JournalViewModel()
     @State private var isEditing = false  // New State to toggle edit mode
+    @State private var showCalendarView = false
 
     let columns = [
         GridItem(.flexible())
@@ -59,9 +60,24 @@ struct EntryListView: View {
                         Text(isEditing ? "Done" : "Edit")
                     }
                 }
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        showCalendarView = true
+                    }) {
+                        Image(systemName: "calendar")
+                    }
+                }
             }
             .sheet(isPresented: $showNewEntryView) {
                 NewEntryView(viewModel: viewModel)
+            }
+            .sheet(isPresented: $showCalendarView) {
+                CalendarView(entries: viewModel.entries, onSelectDate: { date in
+//                    if let entry = viewModel.entries.first(where: { $0.date.isSameDay(as: date) }) {
+//                        EntryDetailView(entry: entry)
+//                    }
+                })
             }
         }
     }
@@ -79,7 +95,8 @@ struct JournalCardView: View {
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            if let imageData = entry.images?.first, let uiImage = UIImage(data: imageData) {
+            // Load the first image from the image paths
+            if let firstImagePath = entry.images.first, let uiImage = UIImage(contentsOfFile: firstImagePath) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFill()

@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct MemoryBoardApp: App {
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            EntryListView()
         }
     }
 }
+
+

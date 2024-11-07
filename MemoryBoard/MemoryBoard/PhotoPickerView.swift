@@ -9,12 +9,12 @@ import SwiftUI
 import PhotosUI
 
 struct PhotoPickerView: UIViewControllerRepresentable {
-    @Binding var selectedImages: [UIImage] // Binding to store the selected images
+    @Binding var selectedImages: [UIImage]
     
     func makeUIViewController(context: Context) -> PHPickerViewController {
         var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 0 // Allow multiple image selection
-        configuration.filter = .images // Only show images
+        configuration.selectionLimit = 0
+        configuration.filter = .images
         
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = context.coordinator
@@ -54,10 +54,9 @@ struct PhotoPickerView: UIViewControllerRepresentable {
 
 struct PhotoPickerView_Previews: PreviewProvider {
     static var previews: some View {
-            PhotoPickerView(selectedImages: .constant(sampleImages)) // Providing sample images
+            PhotoPickerView(selectedImages: .constant(sampleImages))
     }
 
-    // Sample images for the preview (using system icons)
     static var sampleImages: [UIImage] {
         return [
             UIImage(systemName: "photo")!,

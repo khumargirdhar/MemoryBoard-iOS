@@ -14,25 +14,21 @@ class DataManager {
     private let imagesDirectory: URL
     
     init() {
-        // Get the directory to save images
         let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
         imagesDirectory = urls[0].appendingPathComponent("JournalImages")
         
-        // Create the images directory if it doesn't exist
         if !fileManager.fileExists(atPath: imagesDirectory.path) {
             try? fileManager.createDirectory(at: imagesDirectory, withIntermediateDirectories: true)
         }
     }
     
     func saveEntries(_ entries: [JournalEntry]) {
-        // Save entries to UserDefaults
         if let encodedData = try? JSONEncoder().encode(entries) {
             UserDefaults.standard.set(encodedData, forKey: entriesKey)
         }
     }
     
     func loadEntries() -> [JournalEntry] {
-        // Load entries from UserDefaults
         guard let data = UserDefaults.standard.data(forKey: entriesKey),
               let entries = try? JSONDecoder().decode([JournalEntry].self, from: data) else {
             return []

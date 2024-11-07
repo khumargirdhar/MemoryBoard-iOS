@@ -2,21 +2,20 @@ import SwiftUI
 
 struct EntryDetailView: View {
     var entry: JournalEntry
-    @Environment(\.dismiss) private var dismiss  // To dismiss the sheet
-    @Environment(\.presentationMode) private var presentationMode // To detect modal presentation
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.presentationMode) private var presentationMode
     
-    // A helper state to check if the view is being presented modally
     @State private var isPresentedAsSheet = false
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                // Display the image gallery if there are any images
+                
                 if let imageDataArray = entry.images, !imageDataArray.isEmpty {
                     ScrollView(.horizontal, showsIndicators: true) {
                         HStack(spacing: 15) {
                             ForEach(imageDataArray, id: \.self) { imagePath in
-                                // Ensure that the image exists and can be loaded from the file path
+                                
                                 if let uiImage = UIImage(contentsOfFile: imagePath) {
                                     Image(uiImage: uiImage)
                                         .resizable()
@@ -25,7 +24,7 @@ struct EntryDetailView: View {
                                         .cornerRadius(10)
                                         .clipped()
                                 } else {
-                                    // Placeholder image if the file does not exist
+                                    
                                     Color.gray
                                         .frame(width: 350, height: 350)
                                         .cornerRadius(10)
@@ -38,18 +37,18 @@ struct EntryDetailView: View {
                     .padding(.bottom, 20)
                 }
                 
-                // Display the title
+                
                 Text(entry.title)
                     .font(.largeTitle)
                     .bold()
                     .padding(.bottom, 5)
                 
-                // Display the content of the entry
+                
                 Text(entry.content)
                     .font(.body)
                     .padding(.bottom, 20)
                 
-                // Display the tags if any
+                
                 if !entry.tags.isEmpty {
                     Text("Tags: \(entry.tags.joined(separator: ", "))")
                         .foregroundColor(.gray)
@@ -58,23 +57,23 @@ struct EntryDetailView: View {
             }
             .padding()
         }
-        .navigationTitle(formattedDate(entry.date))  // Display the formatted date as the title
+        .navigationTitle(formattedDate(entry.date))
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing: dismissButton())  // Add the dismiss button
+        .navigationBarItems(trailing: dismissButton())
         .onAppear {
-            // Check if the view is presented modally (as a sheet)
+            
             if presentationMode.wrappedValue.isPresented {
                 isPresentedAsSheet = true
             }
         }
     }
     
-    // Dismiss button for when the view is presented as a sheet
+    
     private func dismissButton() -> some View {
         Group {
             if isPresentedAsSheet {
                 Button(action: {
-                    dismiss()  // Dismiss the sheet when tapped
+                    dismiss()
                 }) {
                     Image(systemName: "xmark.circle.fill")
                         .font(.title)
@@ -84,7 +83,7 @@ struct EntryDetailView: View {
         }
     }
     
-    // Helper function to format the date
+    
     func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium

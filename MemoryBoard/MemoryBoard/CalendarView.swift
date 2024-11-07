@@ -23,14 +23,14 @@ struct CalendarView: View {
                     }
                 }, highlightedDates: entries.map { $0.date })
                 
-                // Show the list of entries when a date is selected
+                
                 if showEntriesForSelectedDate, let selectedDate = selectedDate {
                     VStack {
                         Text("Entries for \(selectedDate, formatter: dateFormatter)")
                             .font(.headline)
                             .padding()
                         
-                        // List of entries for the selected date
+                        
                         List(entriesOnDate(selectedDate), id: \.id) { entry in
                             NavigationLink(destination: EntryDetailView(entry: entry)) {
                                 Text(entry.title)

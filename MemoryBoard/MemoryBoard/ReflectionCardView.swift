@@ -110,27 +110,3 @@ struct ReflectionCardView_Previews: PreviewProvider {
         ReflectionCardView()
     }
 }
-
-
-//"What are you grateful for today?",
-//"Describe a moment that made you smile.",
-//"What was a challenge you faced recently?",
-//"What are your goals for the upcoming week?",
-//"Reflect on a recent success you've had.",
-//"What inspired you today?",
-//"Who made a positive impact on your life recently?",
-//"What’s something new you learned this week?",
-//"Describe a recent act of kindness you witnessed or performed.",
-//"What’s a goal you’d like to set for yourself?",
-//"How have you grown over the past month?",
-//"What is something you’re looking forward to?",
-//"What’s a memory that brings you joy?",
-//"What are three things you’re proud of?",
-//"How can you take better care of yourself?",
-//"What are some of your biggest strengths?",
-//"What challenges have you overcome recently?",
-//"Who is someone you’re grateful to have in your life?",
-//"What is something you’ve accomplished that you’re proud of?",
-//"How can you show gratitude to someone in your life?"
-
-

@@ -5,21 +5,21 @@ struct EntryListView: View {
     @ObservedObject private var viewModel = JournalViewModel()
     @State private var isEditing = false
     @State private var showCalendarView = false
-
+    @State private var searchText = ""  // State variable for search text
+    
     let columns = [GridItem(.flexible())]
 
     var body: some View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(viewModel.entries.sorted(by: { $0.date > $1.date })) { entry in
+                    ForEach(viewModel.filteredEntries(searchText: searchText).sorted(by: { $0.date > $1.date })) { entry in
                         ZStack(alignment: .topTrailing) {
                             NavigationLink(destination: EntryDetailView(entry: entry)) {
                                 JournalCardView(entry: entry)
                             }
                             .buttonStyle(PlainButtonStyle())
-
-                            // Show a delete button in edit mode
+                            
                             if isEditing {
                                 Button(action: {
                                     deleteEntry(entry)
@@ -68,20 +68,18 @@ struct EntryListView: View {
                     }
                 }
             }
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .sheet(isPresented: $showNewEntryView) {
                 NewEntryView(viewModel: viewModel)
             }
             .sheet(isPresented: $showCalendarView) {
-                CalendarView(entries: viewModel.entries, onSelectDate: { date in
-                    // Handle entry selection for the date in CalendarView if needed
-                })
+                CalendarView(entries: viewModel.entries, onSelectDate: { date in })
             }
         }
     }
     
-    // Helper function to delete an entry and trigger persistence
     func deleteEntry(_ entry: JournalEntry) {
-        viewModel.deleteEntry(entry)  // Triggers persistent deletion
+        viewModel.deleteEntry(entry)
     }
 }
 
@@ -90,7 +88,7 @@ struct JournalCardView: View {
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            // Load the first image from the image paths
+            
             if let firstImagePath = entry.images.first, let uiImage = UIImage(contentsOfFile: firstImagePath) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -103,7 +101,7 @@ struct JournalCardView: View {
                     .frame(height: 200)
             }
             
-            // Gradient overlay for text readability
+            
             LinearGradient(
                 gradient: Gradient(colors: [Color.black.opacity(0.6), Color.black.opacity(0)]),
                 startPoint: .bottom,

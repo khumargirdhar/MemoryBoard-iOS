@@ -3,12 +3,10 @@ import SwiftUI
 struct EntryListView: View {
     @State private var showNewEntryView = false
     @ObservedObject private var viewModel = JournalViewModel()
-    @State private var isEditing = false  // New State to toggle edit mode
+    @State private var isEditing = false
     @State private var showCalendarView = false
 
-    let columns = [
-        GridItem(.flexible())
-    ]
+    let columns = [GridItem(.flexible())]
 
     var body: some View {
         NavigationView {
@@ -26,9 +24,10 @@ struct EntryListView: View {
                                 Button(action: {
                                     deleteEntry(entry)
                                 }) {
-                                    Image(systemName: "minus.circle.fill")
+                                    Image(systemName: "trash.circle.fill")
                                         .foregroundColor(.red)
                                         .padding(5)
+                                        .font(.title)
                                 }
                             }
                         }
@@ -74,19 +73,15 @@ struct EntryListView: View {
             }
             .sheet(isPresented: $showCalendarView) {
                 CalendarView(entries: viewModel.entries, onSelectDate: { date in
-//                    if let entry = viewModel.entries.first(where: { $0.date.isSameDay(as: date) }) {
-//                        EntryDetailView(entry: entry)
-//                    }
+                    // Handle entry selection for the date in CalendarView if needed
                 })
             }
         }
     }
     
-    // Helper function to delete an entry
+    // Helper function to delete an entry and trigger persistence
     func deleteEntry(_ entry: JournalEntry) {
-        if let index = viewModel.entries.firstIndex(where: { $0.id == entry.id }) {
-            viewModel.entries.remove(at: index)
-        }
+        viewModel.deleteEntry(entry)  // Triggers persistent deletion
     }
 }
 
@@ -131,3 +126,5 @@ struct JournalCardView: View {
         .shadow(radius: 5)
     }
 }
+
+

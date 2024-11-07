@@ -11,7 +11,7 @@ MemoryBoard is your personal memory keeper, capturing life's moments with words,
 
 
 ## iPad
-![screen1](https://github.com/khumargirdhar/MemoryBoard-iOS/blob/main/MemoryBoard/screenshots/small/iPad/ipad-3.png)
-![screen1](https://github.com/khumargirdhar/MemoryBoard-iOS/blob/main/MemoryBoard/screenshots/small/iPad/ipad-4.png)
-![screen1](https://github.com/khumargirdhar/MemoryBoard-iOS/blob/main/MemoryBoard/screenshots/small/iPad/ipad-1.png)
 ![screen1](https://github.com/khumargirdhar/MemoryBoard-iOS/blob/main/MemoryBoard/screenshots/small/iPad/ipad-2.png)
+![screen1](https://github.com/khumargirdhar/MemoryBoard-iOS/blob/main/MemoryBoard/screenshots/small/iPad/ipad-1.png)
+![screen1](https://github.com/khumargirdhar/MemoryBoard-iOS/blob/main/MemoryBoard/screenshots/small/iPad/ipad-4.png)
+![screen1](https://github.com/khumargirdhar/MemoryBoard-iOS/blob/main/MemoryBoard/screenshots/small/iPad/ipad-3.png)

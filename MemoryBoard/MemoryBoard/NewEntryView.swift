@@ -3,21 +3,33 @@ import PhotosUI
 
 struct NewEntryView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var viewModel: JournalViewModel
+    @Environment(\.managedObjectContext) private var viewContext
+    @StateObject private var viewModel: JournalViewModel
     
     @State private var title = ""
     @State private var content = ""
     @State private var tags = ""
     @State private var selectedImageItems: [PhotosPickerItem] = []
-    @State private var selectedImagePaths: [String] = [] // Store file paths instead of Data
+    @State private var selectedImagePaths: [String] = []
+    @State private var selectedDate = Date()
+    
+    init() {
+        _viewModel = StateObject(wrappedValue: JournalViewModel(context: CoreDataManager.shared.viewContext))
+    }
     
     var body: some View {
         NavigationView {
             VStack {
-                
                 ReflectionCardView()
                 
                 Form {
+                    Section(header: Text("Date")) {
+                        DatePicker("Entry Date",
+                                 selection: $selectedDate,
+                                 displayedComponents: [.date, .hourAndMinute])
+                            .datePickerStyle(.compact)
+                    }
+                    
                     Section(header: Text("Title")) {
                         TextField("Enter title", text: $title)
                     }
@@ -32,7 +44,6 @@ struct NewEntryView: View {
                     }
                     
                     Section(header: Text("Photos")) {
-                        // Display selected images as thumbnails
                         if !selectedImagePaths.isEmpty {
                             ScrollView(.horizontal) {
                                 HStack {
@@ -50,15 +61,15 @@ struct NewEntryView: View {
                             .padding(.vertical)
                         }
                         
-                        PhotosPicker("Select Photos", selection: $selectedImageItems, matching: .images, photoLibrary: .shared())
+                        PhotosPicker("Select Photos", selection: $selectedImageItems, matching: .images)
                             .onChange(of: selectedImageItems) { newItems in
-                                selectedImagePaths = []
-                                for item in newItems {
-                                    item.loadTransferable(type: Data.self) { result in
-                                        if case .success(let data) = result, let data = data {
-                                            // Save image to file and store the path
-                                            let filePath = saveImageToFile(data: data)
-                                            selectedImagePaths.append(filePath)
+                                Task {
+                                    selectedImagePaths = []
+                                    for item in newItems {
+                                        if let data = try? await item.loadTransferable(type: Data.self) {
+                                            if let filePath = saveImageToFile(data: data) {
+                                                selectedImagePaths.append(filePath)
+                                            }
                                         }
                                     }
                                 }
@@ -77,14 +88,13 @@ struct NewEntryView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        let newEntry = JournalEntry(
-                            title: title,
+                        viewModel.addEntry(
+                            title,
                             content: content,
-                            date: Date(),
-                            tags: tags.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) },
-                            images: selectedImagePaths // Store paths
+                            date: selectedDate,
+                            tags: tags.split(separator: ",").map { String($0.trimmingCharacters(in: .whitespaces)) },
+                            imagePaths: selectedImagePaths
                         )
-                        viewModel.addEntry(newEntry)
                         dismiss()
                     }
                     .disabled(title.isEmpty || content.isEmpty)
@@ -93,24 +103,21 @@ struct NewEntryView: View {
         }
     }
     
-    private func saveImageToFile(data: Data) -> String {
-        // Get the documents directory
+    private func saveImageToFile(data: Data) -> String? {
         let fileManager = FileManager.default
         guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            return ""
+            return nil
         }
         
-        // Create a unique file name
         let fileName = UUID().uuidString + ".jpg"
         let fileURL = documentsDirectory.appendingPathComponent(fileName)
         
-        // Save the image data to the file
         do {
             try data.write(to: fileURL)
-            return fileURL.path // Return the file path
+            return fileURL.path
         } catch {
             print("Error saving image: \(error)")
-            return ""
+            return nil
         }
     }
 }

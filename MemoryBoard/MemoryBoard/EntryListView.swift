@@ -1,39 +1,75 @@
 import SwiftUI
+import CoreData
 
 struct EntryListView: View {
+    @Environment(\.managedObjectContext) private var viewContext
     @State private var showNewEntryView = false
-    @ObservedObject private var viewModel = JournalViewModel()
     @State private var isEditing = false
     @State private var showCalendarView = false
-    @State private var searchText = ""  // State variable for search text
+    @State private var searchText = ""
+    @State private var showReminderSettings = false
     
-    let columns = [GridItem(.flexible())]
-
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \JournalEntry.date, ascending: false)],
+        animation: .default)
+    private var entries: FetchedResults<JournalEntry>
+    
+    private let columns = [GridItem(.flexible())]
+    
+    var filteredEntries: [JournalEntry] {
+        if searchText.isEmpty {
+            return Array(entries)
+        }
+        return entries.filter { entry in
+            (entry.title ?? "").localizedCaseInsensitiveContains(searchText) ||
+            (entry.content ?? "").localizedCaseInsensitiveContains(searchText) ||
+            (entry.tags ?? []).contains(where: { $0.localizedCaseInsensitiveContains(searchText) })
+        }
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(viewModel.filteredEntries(searchText: searchText).sorted(by: { $0.date > $1.date })) { entry in
+                    ForEach(filteredEntries, id: \.self) { entry in
                         ZStack(alignment: .topTrailing) {
                             NavigationLink(destination: EntryDetailView(entry: entry)) {
                                 JournalCardView(entry: entry)
+                                    .contextMenu {
+                                        Button(action: {
+                                            // Handle edit
+                                        }) {
+                                            Label("Edit", systemImage: "pencil")
+                                        }
+                                        
+                                        Button(role: .destructive, action: {
+                                            deleteEntry(entry)
+                                        }) {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                    }
                             }
                             .buttonStyle(PlainButtonStyle())
                             
                             if isEditing {
                                 Button(action: {
-                                    deleteEntry(entry)
+                                    withAnimation {
+                                        deleteEntry(entry)
+                                    }
                                 }) {
                                     Image(systemName: "trash.circle.fill")
-                                        .foregroundColor(.red)
+                                        .symbolRenderingMode(.palette)
+                                        .foregroundStyle(.white, .red)
                                         .padding(5)
                                         .font(.title)
                                 }
                             }
                         }
-                        .swipeActions(edge: .trailing) {
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button(role: .destructive) {
-                                deleteEntry(entry)
+                                withAnimation {
+                                    deleteEntry(entry)
+                                }
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
@@ -45,41 +81,65 @@ struct EntryListView: View {
             .navigationTitle("MemoryBoard")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showNewEntryView = true
-                    }) {
+                    Menu {
+                        Button(action: { showNewEntryView = true }) {
+                            Label("New Entry", systemImage: "square.and.pencil")
+                        }
+                        
+                        Button(action: { showReminderSettings = true }) {
+                            Label("Set Reminder", systemImage: "bell")
+                        }
+                        
+                        Button(action: { showCalendarView = true }) {
+                            Label("Calendar", systemImage: "calendar")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showNewEntryView = true }) {
                         Image(systemName: "plus")
                     }
                 }
                 
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        isEditing.toggle()
-                    }) {
+                    Button(action: { isEditing.toggle() }) {
                         Text(isEditing ? "Done" : "Edit")
-                    }
-                }
-                
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        showCalendarView = true
-                    }) {
-                        Image(systemName: "calendar")
                     }
                 }
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .sheet(isPresented: $showNewEntryView) {
-                NewEntryView(viewModel: viewModel)
+                NewEntryView()
+                    .environment(\.managedObjectContext, viewContext)
             }
             .sheet(isPresented: $showCalendarView) {
-                CalendarView(entries: viewModel.entries, onSelectDate: { date in })
+                CalendarView(entries: Array(entries))
+                    .environment(\.managedObjectContext, viewContext)
+            }
+            .sheet(isPresented: $showReminderSettings) {
+                ReminderSettingsView()
             }
         }
     }
     
-    func deleteEntry(_ entry: JournalEntry) {
-        viewModel.deleteEntry(entry)
+    private func deleteEntry(_ entry: JournalEntry) {
+        viewContext.delete(entry)
+        
+        // Delete associated images
+        if let imagePaths = entry.imagePaths {
+            for imagePath in imagePaths {
+                try? FileManager.default.removeItem(atPath: imagePath)
+            }
+        }
+        
+        do {
+            try viewContext.save()
+        } catch {
+            print("Error deleting entry: \(error)")
+        }
     }
 }
 
@@ -88,8 +148,8 @@ struct JournalCardView: View {
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            
-            if let firstImagePath = entry.images.first, let uiImage = UIImage(contentsOfFile: firstImagePath) {
+            if let firstImagePath = entry.imagePaths?.first,
+               let uiImage = UIImage(contentsOfFile: firstImagePath) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFill()
@@ -101,7 +161,6 @@ struct JournalCardView: View {
                     .frame(height: 200)
             }
             
-            
             LinearGradient(
                 gradient: Gradient(colors: [Color.black.opacity(0.6), Color.black.opacity(0)]),
                 startPoint: .bottom,
@@ -110,11 +169,11 @@ struct JournalCardView: View {
             .frame(height: 80)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(entry.title)
+                Text(entry.title ?? "")
                     .font(.headline)
                     .foregroundColor(.white)
                     .lineLimit(1)
-                Text(entry.date, style: .date)
+                Text(entry.date ?? Date(), style: .date)
                     .font(.subheadline)
                     .foregroundColor(.white.opacity(0.8))
             }

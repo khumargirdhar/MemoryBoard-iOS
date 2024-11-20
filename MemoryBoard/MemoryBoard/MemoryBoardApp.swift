@@ -6,13 +6,16 @@
 //
 
 import SwiftUI
+import CoreData
 
 @main
 struct MemoryBoardApp: App {
-
+    @StateObject private var dataController = CoreDataManager.shared
+    
     var body: some Scene {
         WindowGroup {
             EntryListView()
+                .environment(\.managedObjectContext, dataController.container.viewContext)
         }
     }
 }

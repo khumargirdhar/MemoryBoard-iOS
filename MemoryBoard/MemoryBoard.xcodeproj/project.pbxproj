@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9E379B3D2CA59B1400134994 /* PhotoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E379B3C2CA59B1400134994 /* PhotoPickerView.swift */; };
+		9E5048EC2CEE308C0092FB0C /* ReminderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5048EB2CEE308B0092FB0C /* ReminderSettingsView.swift */; };
 		9E6AFA732CD6260100893B03 /* JournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AFA722CD6260100893B03 /* JournalViewModel.swift */; };
 		9E8F91FA2CA5356400914923 /* MemoryBoardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F91F92CA5356400914923 /* MemoryBoardApp.swift */; };
 		9E8F91FC2CA5356400914923 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F91FB2CA5356400914923 /* ContentView.swift */; };
@@ -16,16 +17,19 @@
 		9E8F920A2CA5363D00914923 /* EntryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F92092CA5363D00914923 /* EntryListView.swift */; };
 		9E8F920C2CA5365700914923 /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F920B2CA5365700914923 /* EntryDetailView.swift */; };
 		9E8F920E2CA5367500914923 /* NewEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8F920D2CA5367500914923 /* NewEntryView.swift */; };
-		9E9EBDE32CDA0ED30072D2D2 /* JounalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9EBDE22CDA0ED30072D2D2 /* JounalEntry.swift */; };
-		9E9EBDE52CDA0F0A0072D2D2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9EBDE42CDA0F0A0072D2D2 /* DataManager.swift */; };
+		9EB33B042CEE421800A96F88 /* JournalEntry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB33B022CEE421800A96F88 /* JournalEntry+CoreDataProperties.swift */; };
+		9EB33B052CEE421800A96F88 /* JournalEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB33B032CEE421800A96F88 /* JournalEntry+CoreDataClass.swift */; };
 		9EC4C0B92CDBC92200957DE2 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC4C0B82CDBC92200957DE2 /* CalendarView.swift */; };
 		9EC4C0BD2CDBC9AB00957DE2 /* CalendarMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC4C0BC2CDBC9AB00957DE2 /* CalendarMonthView.swift */; };
+		9EE9E7F82CEE3B6D00AAA5CE /* MemoryBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9EE9E7F62CEE3B6C00AAA5CE /* MemoryBoard.xcdatamodeld */; };
+		9EE9E7FA2CEE3D2400AAA5CE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE9E7F92CEE3D2400AAA5CE /* CoreDataManager.swift */; };
 		9EED16F22CA54F35008119CF /* entries.json in Resources */ = {isa = PBXBuildFile; fileRef = 9EED16F12CA54F35008119CF /* entries.json */; };
 		9EF8E88B2CD5FC31008D1D89 /* ReflectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF8E88A2CD5FC31008D1D89 /* ReflectionCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9E379B3C2CA59B1400134994 /* PhotoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerView.swift; sourceTree = "<group>"; };
+		9E5048EB2CEE308B0092FB0C /* ReminderSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderSettingsView.swift; sourceTree = "<group>"; };
 		9E6AFA722CD6260100893B03 /* JournalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalViewModel.swift; sourceTree = "<group>"; };
 		9E8F91F62CA5356400914923 /* MemoryBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoryBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E8F91F92CA5356400914923 /* MemoryBoardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBoardApp.swift; sourceTree = "<group>"; };
@@ -35,10 +39,12 @@
 		9E8F92092CA5363D00914923 /* EntryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryListView.swift; sourceTree = "<group>"; };
 		9E8F920B2CA5365700914923 /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
 		9E8F920D2CA5367500914923 /* NewEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEntryView.swift; sourceTree = "<group>"; };
-		9E9EBDE22CDA0ED30072D2D2 /* JounalEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JounalEntry.swift; sourceTree = "<group>"; };
-		9E9EBDE42CDA0F0A0072D2D2 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		9EB33B022CEE421800A96F88 /* JournalEntry+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JournalEntry+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9EB33B032CEE421800A96F88 /* JournalEntry+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JournalEntry+CoreDataClass.swift"; sourceTree = "<group>"; };
 		9EC4C0B82CDBC92200957DE2 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		9EC4C0BC2CDBC9AB00957DE2 /* CalendarMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMonthView.swift; sourceTree = "<group>"; };
+		9EE9E7F72CEE3B6C00AAA5CE /* MemoryBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MemoryBoard.xcdatamodel; sourceTree = "<group>"; };
+		9EE9E7F92CEE3D2400AAA5CE /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		9EED16F12CA54F35008119CF /* entries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = entries.json; sourceTree = "<group>"; };
 		9EF8E88A2CD5FC31008D1D89 /* ReflectionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +79,8 @@
 		9E8F91F82CA5356400914923 /* MemoryBoard */ = {
 			isa = PBXGroup;
 			children = (
+				9EB33B032CEE421800A96F88 /* JournalEntry+CoreDataClass.swift */,
+				9EB33B022CEE421800A96F88 /* JournalEntry+CoreDataProperties.swift */,
 				9E8F91F92CA5356400914923 /* MemoryBoardApp.swift */,
 				9E8F91FB2CA5356400914923 /* ContentView.swift */,
 				9E8F92092CA5363D00914923 /* EntryListView.swift */,
@@ -81,10 +89,11 @@
 				9E8F920D2CA5367500914923 /* NewEntryView.swift */,
 				9E8F920B2CA5365700914923 /* EntryDetailView.swift */,
 				9EF8E88A2CD5FC31008D1D89 /* ReflectionCardView.swift */,
-				9E9EBDE22CDA0ED30072D2D2 /* JounalEntry.swift */,
+				9E5048EB2CEE308B0092FB0C /* ReminderSettingsView.swift */,
 				9E6AFA722CD6260100893B03 /* JournalViewModel.swift */,
-				9E9EBDE42CDA0F0A0072D2D2 /* DataManager.swift */,
 				9E379B3C2CA59B1400134994 /* PhotoPickerView.swift */,
+				9EE9E7F92CEE3D2400AAA5CE /* CoreDataManager.swift */,
+				9EE9E7F62CEE3B6C00AAA5CE /* MemoryBoard.xcdatamodeld */,
 				9EED16F12CA54F35008119CF /* entries.json */,
 				9E8F91FD2CA5356800914923 /* Assets.xcassets */,
 				9E8F91FF2CA5356800914923 /* Preview Content */,
@@ -176,17 +185,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E6AFA732CD6260100893B03 /* JournalViewModel.swift in Sources */,
-				9E9EBDE52CDA0F0A0072D2D2 /* DataManager.swift in Sources */,
 				9E8F920E2CA5367500914923 /* NewEntryView.swift in Sources */,
-				9E9EBDE32CDA0ED30072D2D2 /* JounalEntry.swift in Sources */,
+				9EE9E7FA2CEE3D2400AAA5CE /* CoreDataManager.swift in Sources */,
 				9E8F91FC2CA5356400914923 /* ContentView.swift in Sources */,
 				9E8F920C2CA5365700914923 /* EntryDetailView.swift in Sources */,
 				9EC4C0B92CDBC92200957DE2 /* CalendarView.swift in Sources */,
+				9EE9E7F82CEE3B6D00AAA5CE /* MemoryBoard.xcdatamodeld in Sources */,
+				9EB33B052CEE421800A96F88 /* JournalEntry+CoreDataClass.swift in Sources */,
 				9EF8E88B2CD5FC31008D1D89 /* ReflectionCardView.swift in Sources */,
 				9E8F91FA2CA5356400914923 /* MemoryBoardApp.swift in Sources */,
 				9EC4C0BD2CDBC9AB00957DE2 /* CalendarMonthView.swift in Sources */,
 				9E379B3D2CA59B1400134994 /* PhotoPickerView.swift in Sources */,
 				9E8F920A2CA5363D00914923 /* EntryListView.swift in Sources */,
+				9E5048EC2CEE308C0092FB0C /* ReminderSettingsView.swift in Sources */,
+				9EB33B042CEE421800A96F88 /* JournalEntry+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +399,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9EE9E7F62CEE3B6C00AAA5CE /* MemoryBoard.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9EE9E7F72CEE3B6C00AAA5CE /* MemoryBoard.xcdatamodel */,
+			);
+			currentVersion = 9EE9E7F72CEE3B6C00AAA5CE /* MemoryBoard.xcdatamodel */;
+			path = MemoryBoard.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 9E8F91EE2CA5356300914923 /* Project object */;
 }

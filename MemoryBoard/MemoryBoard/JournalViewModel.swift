@@ -1,33 +1,44 @@
-import Foundation
+import CoreData
+import SwiftUI
 
 class JournalViewModel: ObservableObject {
-    @Published var entries: [JournalEntry] = []
-    private let dataManager = DataManager()
-
-    init() {
-        self.entries = dataManager.loadEntries()
+    let viewContext: NSManagedObjectContext
+    
+    init(context: NSManagedObjectContext) {
+        self.viewContext = context
     }
     
-    func addEntry(_ entry: JournalEntry) {
-        entries.append(entry)
-        dataManager.saveEntries(entries)
-    }
-
-    func deleteEntry(_ entry: JournalEntry) {
-        entries.removeAll { $0.id == entry.id }
-        dataManager.saveEntries(entries)
-    }
-    
-    // Filter entries based on the search text matching title, content, or tags
-    func filteredEntries(searchText: String) -> [JournalEntry] {
-        if searchText.isEmpty {
-            return entries
-        }
+    func addEntry(_ title: String, content: String, date: Date, tags: [String], imagePaths: [String]) {
+        let entry = JournalEntry(context: viewContext)
+        entry.id = UUID()
+        entry.title = title
+        entry.content = content
+        entry.date = date
+        entry.tags = tags
+        entry.imagePaths = imagePaths
+        entry.createdAt = Date()
+        entry.modifiedAt = Date()
         
-        return entries.filter { entry in
-            entry.title.localizedCaseInsensitiveContains(searchText) ||
-            entry.content.localizedCaseInsensitiveContains(searchText) ||
-            entry.tags.contains(where: { $0.localizedCaseInsensitiveContains(searchText) })
+        saveContext()
+    }
+    
+    func updateEntry(_ entry: JournalEntry, title: String, content: String, date: Date, tags: [String]) {
+        entry.title = title
+        entry.content = content
+        entry.date = date
+        entry.tags = tags
+        entry.modifiedAt = Date()
+        
+        saveContext()
+    }
+    
+    private func saveContext() {
+        if viewContext.hasChanges {
+            do {
+                try viewContext.save()
+            } catch {
+                print("Error saving context: \(error)")
+            }
         }
     }
 }
